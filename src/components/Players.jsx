@@ -23,7 +23,7 @@ export default function Players() {
               key={index}
               className={`text-lg ${
                 currentPlayer === index && winner === null
-                  ? "text-blue-500"
+                  ? "text-blue-600"
                   : "text-slate-500"
               } flex items-center gap-6 font-[500]`}
             >

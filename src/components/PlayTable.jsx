@@ -104,7 +104,7 @@ export default function PlayTable({ dimension, players, winningLength }) {
                   onClick={() => handleClick(rowIndex, cellIndex)}
                   className={`border border-gray-800 ${
                     dimension <= 5 && "md:w-20 md:h-20"
-                  } w-14  h-14 text-center text-slate-500 font-[500] text-lg md:text-2xl cursor-pointer hover:bg-blue-50`}
+                  } w-14  h-14 text-center text-slate-600 font-[500] text-lg md:text-2xl cursor-pointer hover:bg-blue-50`}
                 >
                   {cell !== null ? symbols[cell] : ""}
                 </td>
