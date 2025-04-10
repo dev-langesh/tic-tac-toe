@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { PlayerContext } from "../context/PlayerProvider";
+import { symbols } from "../config";
 
-const symbols = ["X", "O", "Y"];
 
 export default function PlayTable({ dimension, players, winningLength }) {
   const [state, setState] = useState(
@@ -8,6 +9,8 @@ export default function PlayTable({ dimension, players, winningLength }) {
   );
   const [winner, setWinner] = useState(null);
   const [currentPlayer, setCurrentPlayer] = useState(0);
+
+  const playerContext = useContext(PlayerContext);
 
   function isWinningMove(row, col, player) {
     const directions = [
@@ -73,6 +76,7 @@ export default function PlayTable({ dimension, players, winningLength }) {
     });
 
     setCurrentPlayer((prev) => (prev + 1) % players);
+    playerContext.setCurrentPlayer((prev) => (prev + 1) % players);
   }
 
   useEffect(() => {
@@ -84,7 +88,7 @@ export default function PlayTable({ dimension, players, winningLength }) {
   }, [winner]);
 
   return (
-    <div className="">
+    <div className=" flex-shrink-0">
       <table className="border-collapse border border-gray-800">
         <tbody>
           {state.map((row, rowIndex) => (
@@ -93,7 +97,7 @@ export default function PlayTable({ dimension, players, winningLength }) {
                 <td
                   key={`c-${cellIndex}`}
                   onClick={() => handleClick(rowIndex, cellIndex)}
-                  className="border border-gray-800 w-10 h-10 text-center"
+                  className="border border-gray-800 md:w-20 w-14 md:h-20 h-14 text-center"
                 >
                   {cell !== null ? symbols[cell] : ""}
                 </td>
