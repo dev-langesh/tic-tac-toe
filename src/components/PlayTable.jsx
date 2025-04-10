@@ -75,7 +75,7 @@ export default function PlayTable({ dimension, players, winningLength }) {
 
   function handleClick(rowIndex, cellIndex) {
     setState((prev) => {
-      if (prev[rowIndex][cellIndex] === null && !winner) {
+      if (prev[rowIndex][cellIndex] === null && winner === null) {
         const newState = prev.map((row) => row.slice());
         newState[rowIndex][cellIndex] = currentPlayer;
 
