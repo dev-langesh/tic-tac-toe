@@ -4,23 +4,15 @@ import { symbols } from "../config";
 import { GiPodiumWinner } from "react-icons/gi";
 
 export default function Players() {
-  const {
-    playerNames,
-    currentPlayer,
-    winner,
-    setReset,
-    setWinner,
-    setCurrentPlayer,
-  } = useContext(PlayerContext);
+  const { playerNames, currentPlayer, winner, setReset } =
+    useContext(PlayerContext);
 
   function restartGame() {
     setReset(true);
-    setWinner(null);
-    setCurrentPlayer(0);
   }
 
   return (
-    <div className="w-full flex flex-col justify-between">
+    <div className="w-full min-w-[250px] flex flex-col justify-between ">
       <div>
         <h1 className="text-center text-2xl font-semibold text-slate-700">
           Players

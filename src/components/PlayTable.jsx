@@ -6,14 +6,23 @@ export default function PlayTable({ dimension, players, winningLength }) {
   const [state, setState] = useState(
     Array(dimension).fill(Array(dimension).fill(null))
   );
-  const [currentPlayer, setCurrentPlayer] = useState(0);
 
   const playerContext = useContext(PlayerContext);
+  const {
+    currentPlayer,
+    winner,
+    setWinner,
+    reset,
+    setReset,
+    setCurrentPlayer,
+  } = useContext(PlayerContext);
 
   useEffect(() => {
-    if (playerContext.reset) {
+    if (reset) {
       setState(Array(dimension).fill(Array(dimension).fill(null)));
-      playerContext.setReset(false);
+      setReset(false);
+      setCurrentPlayer(0);
+      setWinner(null);
     }
   }, [playerContext]);
 
@@ -66,12 +75,12 @@ export default function PlayTable({ dimension, players, winningLength }) {
 
   function handleClick(rowIndex, cellIndex) {
     setState((prev) => {
-      if (prev[rowIndex][cellIndex] === null && !playerContext.winner) {
+      if (prev[rowIndex][cellIndex] === null && !winner) {
         const newState = prev.map((row) => row.slice());
         newState[rowIndex][cellIndex] = currentPlayer;
 
         if (isWinningMove(rowIndex, cellIndex, currentPlayer)) {
-          playerContext.setWinner(currentPlayer);
+          setWinner(currentPlayer);
         }
 
         return newState;
@@ -81,12 +90,11 @@ export default function PlayTable({ dimension, players, winningLength }) {
     });
 
     setCurrentPlayer((prev) => (prev + 1) % players);
-    playerContext.setCurrentPlayer((prev) => (prev + 1) % players);
   }
 
   return (
     <div className=" flex-shrink-0">
-      <table className="border-collapse border border-gray-800">
+      <table className="border-collapse border border-gray-800 ">
         <tbody>
           {state.map((row, rowIndex) => (
             <tr key={`r-${rowIndex}`}>
@@ -94,7 +102,9 @@ export default function PlayTable({ dimension, players, winningLength }) {
                 <td
                   key={`c-${cellIndex}`}
                   onClick={() => handleClick(rowIndex, cellIndex)}
-                  className="border border-gray-800 md:w-20 w-14 md:h-20 h-14 text-center"
+                  className={`border border-gray-800 ${
+                    dimension <= 5 && "md:w-20 md:h-20"
+                  } w-14  h-14 text-center text-slate-500 font-[500] text-lg md:text-2xl cursor-pointer hover:bg-blue-50`}
                 >
                   {cell !== null ? symbols[cell] : ""}
                 </td>
