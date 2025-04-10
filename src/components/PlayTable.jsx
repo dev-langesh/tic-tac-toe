@@ -6,8 +6,8 @@ export default function PlayTable({ dimension, players, winningLength }) {
   const [state, setState] = useState(
     Array(dimension).fill(Array(dimension).fill(null))
   );
-  const [playerQueue, setPlayerQueue] = useState(players);
   const [winner, setWinner] = useState(null);
+  const [currentPlayer, setCurrentPlayer] = useState(0);
 
   function isWinningMove(row, col, player) {
     const directions = [
@@ -60,7 +60,6 @@ export default function PlayTable({ dimension, players, winningLength }) {
     setState((prev) => {
       if (prev[rowIndex][cellIndex] === null && !winner) {
         const newState = prev.map((row) => row.slice());
-        const currentPlayer = playerQueue[0];
         newState[rowIndex][cellIndex] = currentPlayer;
 
         if (isWinningMove(rowIndex, cellIndex, currentPlayer)) {
@@ -73,29 +72,16 @@ export default function PlayTable({ dimension, players, winningLength }) {
       return prev;
     });
 
-    setPlayerQueue((prev) => {
-      if (!winner) {
-        const newQueue = prev.slice();
-        newQueue.push(newQueue.shift());
-        return newQueue;
-      }
-      return prev;
-    });
+    setCurrentPlayer((prev) => (prev + 1) % players);
   }
 
   useEffect(() => {
-    console.log("state", state);
-    console.log("player", playerQueue);
-  }, [state, playerQueue]);
-
-  useEffect(() => {
-    if (winner) {
+    if (winner !== null) {
       alert(`Player ${winner} wins!`);
       setState(Array(dimension).fill(Array(dimension).fill(null)));
-      setPlayerQueue(players);
       setWinner(null);
     }
-  }, [winner, dimension, players]);
+  }, [winner]);
 
   return (
     <div className="">
@@ -109,7 +95,7 @@ export default function PlayTable({ dimension, players, winningLength }) {
                   onClick={() => handleClick(rowIndex, cellIndex)}
                   className="border border-gray-800 w-10 h-10 text-center"
                 >
-                  {cell !== null ? symbols[cell - 1] : ""}
+                  {cell !== null ? symbols[cell] : ""}
                 </td>
               ))}
             </tr>
