@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { PlayerContext } from "../context/PlayerProvider";
 import { symbols } from "../config";
 
@@ -9,6 +9,13 @@ export default function PlayTable({ dimension, players, winningLength }) {
   const [currentPlayer, setCurrentPlayer] = useState(0);
 
   const playerContext = useContext(PlayerContext);
+
+  useEffect(() => {
+    if (playerContext.reset) {
+      setState(Array(dimension).fill(Array(dimension).fill(null)));
+      playerContext.setReset(false);
+    }
+  }, [playerContext]);
 
   function isWinningMove(row, col, player) {
     const directions = [

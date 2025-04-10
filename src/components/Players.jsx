@@ -4,7 +4,20 @@ import { symbols } from "../config";
 import { GiPodiumWinner } from "react-icons/gi";
 
 export default function Players() {
-  const { playerNames, currentPlayer, winner } = useContext(PlayerContext);
+  const {
+    playerNames,
+    currentPlayer,
+    winner,
+    setReset,
+    setWinner,
+    setCurrentPlayer,
+  } = useContext(PlayerContext);
+
+  function restartGame() {
+    setReset(true);
+    setWinner(null);
+    setCurrentPlayer(0);
+  }
 
   return (
     <div className="w-full flex flex-col justify-between">
@@ -17,7 +30,9 @@ export default function Players() {
             <li
               key={index}
               className={`text-lg ${
-                currentPlayer === index ? "text-blue-500" : "text-slate-500"
+                currentPlayer === index && winner === null
+                  ? "text-blue-500"
+                  : "text-slate-500"
               } flex items-center gap-6 font-[500]`}
             >
               <span>{name}</span> <span>{symbols[index]}</span>
@@ -35,6 +50,12 @@ export default function Players() {
           </div>
         )}
       </div>
+      <button
+        onClick={restartGame}
+        className="mt-4 border text-blue-600 border-blue-600  py-2 px-4 font-[500] rounded hover:bg-blue-600 hover:text-white cursor-pointer  transition duration-500 w-full"
+      >
+        Restart Game
+      </button>
     </div>
   );
 }

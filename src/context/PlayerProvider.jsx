@@ -10,6 +10,7 @@ export default function PlayerProvider({ children }) {
   ]);
   const [currentPlayer, setCurrentPlayer] = useState(0);
   const [winner, setWinner] = useState(null);
+  const [reset, setReset] = useState(false);
 
   return (
     <PlayerContext.Provider
@@ -20,6 +21,8 @@ export default function PlayerProvider({ children }) {
         setPlayerNames,
         winner,
         setWinner,
+        reset,
+        setReset,
       }}
     >
       {children}
