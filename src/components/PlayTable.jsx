@@ -1,13 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { PlayerContext } from "../context/PlayerProvider";
 import { symbols } from "../config";
-
 
 export default function PlayTable({ dimension, players, winningLength }) {
   const [state, setState] = useState(
     Array(dimension).fill(Array(dimension).fill(null))
   );
-  const [winner, setWinner] = useState(null);
   const [currentPlayer, setCurrentPlayer] = useState(0);
 
   const playerContext = useContext(PlayerContext);
@@ -61,12 +59,12 @@ export default function PlayTable({ dimension, players, winningLength }) {
 
   function handleClick(rowIndex, cellIndex) {
     setState((prev) => {
-      if (prev[rowIndex][cellIndex] === null && !winner) {
+      if (prev[rowIndex][cellIndex] === null && !playerContext.winner) {
         const newState = prev.map((row) => row.slice());
         newState[rowIndex][cellIndex] = currentPlayer;
 
         if (isWinningMove(rowIndex, cellIndex, currentPlayer)) {
-          setWinner(currentPlayer);
+          playerContext.setWinner(currentPlayer);
         }
 
         return newState;
@@ -78,14 +76,6 @@ export default function PlayTable({ dimension, players, winningLength }) {
     setCurrentPlayer((prev) => (prev + 1) % players);
     playerContext.setCurrentPlayer((prev) => (prev + 1) % players);
   }
-
-  useEffect(() => {
-    if (winner !== null) {
-      alert(`Player ${winner} wins!`);
-      setState(Array(dimension).fill(Array(dimension).fill(null)));
-      setWinner(null);
-    }
-  }, [winner]);
 
   return (
     <div className=" flex-shrink-0">

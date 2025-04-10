@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { PlayerContext } from "../context/PlayerProvider";
 import { symbols } from "../config";
+import { GiPodiumWinner } from "react-icons/gi";
 
 export default function Players() {
   const { playerNames, currentPlayer, winner } = useContext(PlayerContext);
@@ -25,12 +26,13 @@ export default function Players() {
         </ul>
       </div>{" "}
       <div>
-        {winner && (
-          <>
-            <h1 className="text-center text-2xl font-semibold text-green-700">
-              Winner
+        {winner !== null && (
+          <div className="flex items-center flex-col">
+            <GiPodiumWinner className="text-4xl text-green-600" />
+            <h1 className="text-center text-xl font-semibold text-green-600">
+              {playerNames[winner]} wins!
             </h1>
-          </>
+          </div>
         )}
       </div>
     </div>
